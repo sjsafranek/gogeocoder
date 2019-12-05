@@ -10,34 +10,30 @@ import (
 )
 
 func Reverse(longitude, latitude float64) (Location, error) {
-	var n Location
+	var location Location
 
 	searchURL := fmt.Sprintf("https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lon=%v&lat=%v", longitude, latitude)
 
-	// log.Println(searchURL)
-
 	resp, err := http.Get(searchURL)
 	if err != nil {
 		err = errors.Wrap(err, searchURL)
-		return n, err
+		return location, err
 	}
 	defer resp.Body.Close()
 
-	err = json.NewDecoder(resp.Body).Decode(&n)
+	err = json.NewDecoder(resp.Body).Decode(&location)
 	if err != nil {
 		err = errors.Wrap(err, searchURL)
-		return n, err
+		return location, err
 	}
 
-	return n, err
+	return location, err
 }
 
 func Geocode(search string) (Location, error) {
-	var n []Location
+	var location []Location
 
 	searchURL := fmt.Sprintf("https://nominatim.openstreetmap.org/search?q=%s&format=json&addressdetails=1", search)
-
-	// log.Println(searchURL)
 
 	resp, err := http.Get(searchURL)
 	if err != nil {
@@ -46,13 +42,13 @@ func Geocode(search string) (Location, error) {
 	}
 	defer resp.Body.Close()
 
-	err = json.NewDecoder(resp.Body).Decode(&n)
+	err = json.NewDecoder(resp.Body).Decode(&location)
 	if err != nil {
 		err = errors.Wrap(err, searchURL)
 		return Location{}, err
 	}
 
-	return n[0], err
+	return location[0], err
 }
 
 type Location struct {
