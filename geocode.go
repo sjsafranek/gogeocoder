@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
+	// "strconv"
 
 	"github.com/pkg/errors"
-	log "github.com/schollz/logger"
+	// log "github.com/schollz/logger"
 )
 
 // type Location struct {
@@ -63,8 +63,8 @@ import (
 // 	return
 // }
 
-func Reverse(longitude, latitude float64) (Nominatim, error) {
-	var n Nominatim
+func Reverse(longitude, latitude float64) (Location, error) {
+	var n Location
 
 	searchURL := fmt.Sprintf("https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lon=%v&lat=%v", longitude, latitude)
 
@@ -84,28 +84,28 @@ func Reverse(longitude, latitude float64) (Nominatim, error) {
 	return n, err
 }
 
-func Geocode(search string) (Nominatim, error) {
-	var n []Nominatim
+func Geocode(search string) (Location, error) {
+	var n []Location
 
 	searchURL := fmt.Sprintf("https://nominatim.openstreetmap.org/search?q=%s&format=json&addressdetails=1", search)
 
 	resp, err := http.Get(searchURL)
 	if err != nil {
 		err = errors.Wrap(err, searchURL)
-		return Nominatim{}, err
+		return Location{}, err
 	}
 	defer resp.Body.Close()
 
 	err = json.NewDecoder(resp.Body).Decode(&n)
 	if err != nil {
 		err = errors.Wrap(err, searchURL)
-		return Nominatim{}, err
+		return Location{}, err
 	}
 
 	return n[0], err
 }
 
-type Nominatim struct {
+type Location struct {
 	PlaceID int     `json:"place_id,omitempty"`
 	DisplayName string `json:"display_name,omitempty"`
 	Lat     string  `json:"lat,omitempty"`
