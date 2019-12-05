@@ -2,7 +2,6 @@ package gogeocoder
 
 import (
 	"encoding/json"
-	// "log"
 	"fmt"
 	"net/http"
 
