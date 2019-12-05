@@ -52,15 +52,15 @@ func Geocode(search string) (Location, error) {
 }
 
 type Location struct {
-	PlaceID     int      `json:"place_id,omitempty"`
-	OsmID       int      `json:"osm_id,omitempty"`
-	DisplayName string   `json:"display_name,omitempty"`
-	Lat         string   `json:"lat,omitempty"`
-	Lon         string   `json:"lon,omitempty"`
-	Class       string   `json:"class,omitempty"`
-	Type        string   `json:"type,omitempty"`
-	Address     Address  `json:"address,omitempty"`
-	BoundingBox []string `json:"boundingbox,omitempty"`
+	PlaceID     int            `json:"place_id,omitempty"`
+	OsmID       int            `json:"osm_id,omitempty"`
+	DisplayName string         `json:"display_name,omitempty"`
+	Lat         json.Number    `json:"lat,omitempty"`
+	Lon         json.Number    `json:"lon,omitempty"`
+	Class       string         `json:"class,omitempty"`
+	Type        string         `json:"type,omitempty"`
+	Address     Address        `json:"address,omitempty"`
+	BoundingBox [4]json.Number `json:"boundingbox,omitempty"`
 }
 
 type Address struct {
